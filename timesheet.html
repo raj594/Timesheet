@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>Sign-Up Today!</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <br>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+      <h1 class="text-center">Employee Data Management</h1>
+      <h3 class="text-center">A Comprehensive Directoy of Employee Billable Hours</h3>
+    </div>
+    <div class="row">
+
+      <!-- Current Employee Panel -->
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Current Employees</h3>
+          </div>
+          <div class="panel-body" id="recent-member">
+            <h4 id="employee-display">Employee Name</h2>
+            <h4 id="role-display">Role</h4>
+            <h4 id="start-date-display">Start Date</h4>
+            <h4 id="months-worked-display">Months Worked</h4>
+            <h4 id="monthly-rate-display">Months Worked</h4>
+            <h4 id="total-billed-display">Months Worked</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Employee Panel -->
+      <div class="col-lg-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Add Employee</h3>
+          </div>
+          <div class="panel-body">
+
+            <!-- Sign-up Form (note the various input "types")-->
+            <form role="form">
+              <div class="form-group">
+                <label for="employee-name">Employee Name</label>
+                <input class="form-control" id="employee-name" type="text">
+              </div>
+              <div class="form-group">
+                <label for="role">Role</label>
+                <input class="form-control" id="role" type="email">
+              </div>
+              <div class="form-group">
+                <label for="start-date">Start Date (DD/MM/YY - ex. 01/01/17)</label>
+                <input class="form-control" id="start-date" type="number">
+              </div>
+              <div class="form-group">
+                <label for="monthly-rate">Monthly Rate</label>
+                <textarea class="form-control" id="monthly-rate" rows="5"></textarea>
+              </div>
+              <button class="btn btn-default" id="add-employee" type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+  </div>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+  <!-- LINK TO FIREBASE GOES HERE -->
+  <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+
+  <!-- Script -->
+  <script>
+    //  START CODING BELOW!!
+
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDlLlU0xyi4TLbvQ3ygf8ArY0MH4-jccR4",
+      authDomain: "recent-user-9c16b.firebaseapp.com",
+      databaseURL: "https://recent-user-9c16b.firebaseio.com",
+      projectId: "recent-user-9c16b",
+      storageBucket: "",
+      messagingSenderId: "50797409187"
+    };
+    firebase.initializeApp(config);
+
+    // Create a variable to reference the database
+    var database = firebase.database();
+
+    // Capture Button Click
+    $("#add-user").on("click", function() {
+      // Don't refresh the page!
+      event.preventDefault();
+
+      // YOUR TASK!!!
+
+      // Code in the logic for storing and retrieving the most recent user.
+      name = $("#name-input").val().trim();
+      email = $("#email-input").val().trim();
+      age = $("#age-input").val().trim();
+      comment = $("#comment-input").val().trim();
+
+      // Change what is saved in firebase
+      database.ref().set({
+        name: name,
+        email: email,
+        age: age,
+        comment: comment
+      });
+      // Don't forget to handle the "initial load"
+
+    });
+
+
+    // Create Firebase "watcher" Hint: .on("value")
+    database.ref().on("value", function(snapshot) {
+
+      // Print the initial data to the console.
+      console.log(snapshot.val());
+
+      // Log the value of the various properties
+      console.log(snapshot.val().name);
+      console.log(snapshot.val().email);
+      console.log(snapshot.val().age);
+      console.log(snapshot.val().comment);
+
+      // Change the HTML
+
+      $("#name-display").text(snapshot.val().name);
+      $("#email-display").text(snapshot.val().email);
+      $("#age-display").text(snapshot.val().age);
+      $("#comment-display").text(snapshot.val().comment);
+
+      // If any errors are experienced, log them to console.
+    }, 
+
+    // Create Error Handling
+    function(errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+  </script>
+
+</body>
+
+</html>
